@@ -6,7 +6,7 @@ const error = ref<AppError | null>()
 
 <template>
   <UContainer>
-    <PageHeading title="Conversation" description="Conversation description" />
+    <PageHeading title="Background removal" description="Background removal" />
     <UAlert
       v-if="error"
       color="error"

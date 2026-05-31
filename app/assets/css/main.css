@@ -12,3 +12,7 @@
 .dark {
   --ui-primary: white;
 }
+
+* {
+  scroll-behavior: smooth;
+}

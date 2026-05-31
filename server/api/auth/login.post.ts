@@ -10,13 +10,13 @@ export default defineEventHandler(async (event) => {
   const existingUser = await prisma.user.findUnique({ where: { email } })
 
   if (!existingUser || !existingUser.password) {
-    throw createError({ statusCode: 401, message: "Unathorized" })
+    throw createError({ statusCode: 401, statusMessage: "Invalid email or password." })
   }
 
   const isPasswordValid = await verify(existingUser.password, password)
 
   if (!isPasswordValid) {
-    throw createError({ statusCode: 401, message: "Unauthorized" })
+    throw createError({ statusCode: 401, statusMessage: "Invalid email or password." })
   }
 
   await setUserSession(event, {

@@ -6,7 +6,7 @@ const error = ref<AppError | null>()
 
 <template>
   <UContainer>
-    <PageHeading title="Conversation" description="Conversation description" />
+    <PageHeading title="AI Article Writer" description="Article writer description" />
     <UAlert
       v-if="error"
       color="error"

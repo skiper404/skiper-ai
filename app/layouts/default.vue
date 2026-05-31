@@ -14,5 +14,7 @@
     <div class="flex-1 p-4 transition-all duration-500">
       <slot />
     </div>
+
+    <AppFooter />
   </div>
 </template>

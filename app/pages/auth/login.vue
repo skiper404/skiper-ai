@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from "@nuxt/ui"
 import { type LoginUserSchema, loginUserSchema } from "@@/shared/schemas/login-user.schema"
+import type { FetchError } from "ofetch"
 
 definePageMeta({ layout: "auth", middleware: "guest" })
 
 const state = reactive<LoginUserSchema>({ email: "", password: "" })
+const error = ref<AppError | null>(null)
 
 const onSubmit = async (event: FormSubmitEvent<LoginUserSchema>) => {
   try {
@@ -13,15 +15,20 @@ const onSubmit = async (event: FormSubmitEvent<LoginUserSchema>) => {
       body: event.data,
     })
     await navigateTo("/dashboard")
-  } catch (e: unknown) {
-    console.log(e)
+  } catch (e) {
+    const err = e as FetchError
+
+    if (err.statusCode === 401) {
+      error.value = getError(err)
+    }
   }
 }
 </script>
 
 <template>
-  <UContainer class="mt-10 flex justify-center">
+  <UContainer class="mt-20 flex justify-center">
     <UCard title="Login" class="w-full transition-all sm:w-100">
+      <UAlert v-if="error" color="error" variant="subtle" :title="error.statusMessage" class="mb-2" />
       <UForm :schema="loginUserSchema" :state="state" class="space-y-4" @submit="onSubmit">
         <UFormField label="Email" name="email" required>
           <UInput
@@ -44,7 +51,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginUserSchema>) => {
           />
         </UFormField>
         <USeparator label="or" />
-        <a href="/api/auth/google" class="bg-accented flex h-8 items-center justify-center gap-1 rounded-lg">
+        <a href="/api/auth/google" class="bg-accented flex h-8 items-center justify-center gap-1 rounded-lg text-sm">
           <Icon name="logos:google-icon" size="20" />Sign in with Google</a
         >
 
@@ -53,7 +60,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginUserSchema>) => {
 
       <div class="mt-2 flex items-center justify-center text-xs">
         <span>Don't have an account?</span>
-        <UButton variant="link" class="cursor-pointer text-xs" label="Sign Up" to="/auth/register" />
+        <UButton variant="link" class="text-success cursor-pointer text-xs" label="Sign Up" to="/auth/register" />
       </div>
     </UCard>
   </UContainer>
