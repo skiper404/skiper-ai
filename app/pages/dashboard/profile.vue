@@ -4,7 +4,7 @@ definePageMeta({ layout: "dashboard" })
 
 <template>
   <div>
-    <PageHeading title="Settings" description="Settings description" />
+    <PageHeading title="Profile" description="Profile description" />
   </div>
 </template>
 

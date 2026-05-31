@@ -2,16 +2,12 @@
 
 <template>
   <div class="flex min-h-screen flex-col">
-    <header class="bg-accented flex h-12 items-center justify-between px-4">
+    <header class="bg-primary/10 flex h-12 items-center justify-between px-4">
       <AppLogo />
       <div class="flex items-center space-x-2">
         <UColorModeButton class="ml-auto" />
-        <UButton variant="subtle" color="neutral" to="/auth/login">
-          Sign In
-        </UButton>
-        <UButton variant="solid" color="secondary" to="/auth/register">
-          Sign Up
-        </UButton>
+        <UButton variant="subtle" color="neutral" to="/auth/login"> Sign In </UButton>
+        <UButton to="/auth/register"> Sign Up </UButton>
       </div>
     </header>
 

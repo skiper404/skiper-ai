@@ -1,53 +1,33 @@
 <script setup lang="ts">
-import * as z from "zod";
-import type { FormSubmitEvent } from "@nuxt/ui";
+import type { FormSubmitEvent } from "@nuxt/ui"
+import { type RegisterUserSchema, registerUserSchema } from "@@/shared/schemas/register-user.schema"
 
-definePageMeta({ layout: "auth" });
+definePageMeta({ layout: "auth", middleware: "guest" })
 
-const schema = z
-  .object({
-    username: z
-      .string()
-      .min(1, "Username is required")
-      .max(50, "Too long username"),
-    email: z.email("Invalid email").max(50, "Too long email"),
-    password: z
-      .string("Password is required")
-      .min(8, "Must be at least 8 characters")
-      .max(50, "Too long password"),
-    confirmPassword: z
-      .string("Repeat password is required")
-      .min(8, "Must be at least 8 characters")
-      .max(50, "Too long password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    error: "Passwords don`t match",
-    path: ["confirmPassword"],
-  });
-
-type Schema = z.output<typeof schema>;
-
-const state = reactive<Schema>({
+const state = reactive<RegisterUserSchema>({
   username: "",
   email: "",
   password: "",
   confirmPassword: "",
-});
+})
 
-const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  console.log(event.data);
-};
+const onSubmit = async (event: FormSubmitEvent<RegisterUserSchema>) => {
+  try {
+    await $fetch("/api/auth/register", {
+      method: "POST",
+      body: event.data,
+    })
+    await navigateTo("/dashboard")
+  } catch (e: unknown) {
+    console.log(e)
+  }
+}
 </script>
 
 <template>
   <UContainer class="mt-10 flex justify-center">
     <UCard title="Register" class="w-full transition-all sm:w-100">
-      <UForm
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
+      <UForm :schema="registerUserSchema" :state="state" class="space-y-4" @submit="onSubmit">
         <UFormField label="Username" name="username" required>
           <UInput
             v-model="state.username"
@@ -98,22 +78,11 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           class="flex w-full justify-center"
         />
 
-        <UButton
-          type="submit"
-          color="neutral"
-          class="flex w-full justify-center"
-        >
-          Submit
-        </UButton>
+        <UButton type="submit" color="neutral" class="flex w-full justify-center"> Submit </UButton>
       </UForm>
       <div class="mt-2 flex items-center justify-center text-xs">
         <span>Already have an account?</span>
-        <UButton
-          variant="link"
-          class="cursor-pointer text-xs"
-          label="Sign in"
-          to="/auth/login"
-        />
+        <UButton variant="link" class="cursor-pointer text-xs" label="Sign in" to="/auth/login" />
       </div>
     </UCard>
   </UContainer>

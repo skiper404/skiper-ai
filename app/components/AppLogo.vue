@@ -1,11 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-	<NuxtLink
-		class="flex items-center gap-2 font-bold text-2xl cursor-pointer"
-		to="/dashboard"
-	>
-		<Icon name="lucide:brain-circuit" size="30" />
-		Skiper AI
-	</NuxtLink>
+  <NuxtLink class="flex cursor-pointer items-center gap-2 text-lg font-bold" to="/">
+    <Icon name="lucide:brain-circuit" size="26" class="text-success" />
+    Skiper AI
+  </NuxtLink>
 </template>

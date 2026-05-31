@@ -1,5 +1,5 @@
-import type { NavigationMenuItem } from "@nuxt/ui";
-import { ref } from "vue";
+import type { NavigationMenuItem } from "@nuxt/ui"
+import { ref } from "vue"
 
 export const navItems = ref<NavigationMenuItem[]>([
   {
@@ -8,8 +8,8 @@ export const navItems = ref<NavigationMenuItem[]>([
     to: "/dashboard/conversation",
   },
   {
-    label: "Settings",
-    icon: "i-lucide-cog",
-    to: "/dashboard/settings",
+    label: "Profile",
+    icon: "i-lucide-user",
+    to: "/dashboard/profile",
   },
-]);
+])

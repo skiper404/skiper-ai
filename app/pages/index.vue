@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({ layout: "default", middleware: "guest" })
+</script>
 
 <template>
-  <div>Home</div>
+  <div>
+    <div>Home</div>
+  </div>
 </template>
 
 <style scoped></style>
