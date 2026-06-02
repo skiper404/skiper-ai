@@ -10,22 +10,15 @@ export const aiTools = [
     title: "Code Generator",
     description: "Generate code snippets and programming solutions.",
     icon: "lucide:code-2",
-    path: "/dashboard/code-generator",
+    path: "/dashboard/code",
     btnText: "Generate Code",
   },
   {
     title: "AI Article Writer",
     description: "Create articles, blog posts, and long-form content.",
     icon: "lucide:file-pen-line",
-    path: "/dashboard/article-writer",
+    path: "/dashboard/article",
     btnText: "Write Article",
-  },
-  {
-    title: "Blog Title Generator",
-    description: "Generate engaging and SEO-friendly blog titles.",
-    icon: "lucide:heading-1",
-    path: "/dashboard/blog-title",
-    btnText: "Generate Titles",
   },
   {
     title: "Background Removal",
@@ -42,10 +35,9 @@ export const aiTools = [
     btnText: "Remove Objects",
   },
   {
-    title: "Resume Reviewer",
+    title: "Resume Reviewer (Soon...)",
     description: "Analyze and improve your resume with AI feedback.",
     icon: "lucide:file-search",
-    path: "/dashboard/resume-reviewer",
     btnText: "Review Resume",
   },
 ]

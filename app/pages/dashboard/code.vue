@@ -27,7 +27,7 @@ const submitPrompt = async (prompt: string) => {
       content: prompt.trim(),
     })
 
-    const data = await $fetch("/api/ai-tools/conversation", {
+    const data = await $fetch("/api/ai-tools/code", {
       method: "POST",
       body: {
         messages: messages.value,
@@ -62,7 +62,7 @@ const submitOnEnter = async () => {
 
 <template>
   <UContainer>
-    <PageHeading title="Conversation" description="Conversation description" />
+    <PageHeading title="Code generator" description="Code generator description" />
 
     <UAlert
       v-if="error"
@@ -80,7 +80,7 @@ const submitOnEnter = async () => {
     >
       <Icon
         v-if="!messages.length"
-        name="lucide:messages-square"
+        name="lucide:message-square-code"
         class="text-primary/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         size="170"
       />

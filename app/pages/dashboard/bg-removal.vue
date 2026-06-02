@@ -1,7 +1,50 @@
 <script setup lang="ts">
+import type { FetchError } from "ofetch"
+import type { FormSubmitEvent } from "@nuxt/ui"
+import { imageSchema, type ImageSchema } from "~~/shared/schemas/remove-bg-image.schema"
+
 definePageMeta({ layout: "dashboard", middleware: "auth" })
 
+const isLoading = ref(false)
 const error = ref<AppError | null>()
+const mappedImageUrl = ref("")
+
+const state = reactive<Partial<ImageSchema>>({
+  image: undefined,
+})
+
+const resetImage = () => {
+  state.image = undefined
+  mappedImageUrl.value = ""
+}
+
+const removeBg = async (event: FormSubmitEvent<ImageSchema>) => {
+  try {
+    isLoading.value = true
+    const formData = new FormData()
+
+    if (event.data.image instanceof File) {
+      formData.append("image", event.data.image)
+    }
+
+    const data = await $fetch("/api/cloudinary-tools/remove-background", {
+      method: "POST",
+      body: formData,
+    })
+
+    if (data) {
+      mappedImageUrl.value = data
+    }
+  } catch (e) {
+    const err = e as FetchError
+    if (err.statusCode === 401) {
+      await navigateTo("/auth/login")
+    }
+    error.value = getError(err)
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -15,6 +58,34 @@ const error = ref<AppError | null>()
       :description="error.statusMessage"
       class="mt-2"
     />
+    <div class="mt-2 grid grid-cols-1 gap-6 xl:grid-cols-2 xl:items-start">
+      <UCard>
+        <UForm :schema="imageSchema" :state="state" class="space-y-4" @submit="removeBg">
+          <UFormField name="image" label="Image" description="JPG, GIF or PNG. 2MB Max.">
+            <UFileUpload v-model="state.image" accept="image/*" class="h-full min-h-0" />
+          </UFormField>
+
+          <UButton type="submit" label="Submit" color="neutral" :disabled="isLoading" :loading="isLoading" />
+          <UButton type="button" label="Reset" class="ml-4" color="error" @click="resetImage" />
+        </UForm>
+      </UCard>
+
+      <UCard
+        class="bg-primary/5 relative flex min-h-full w-full items-center justify-center"
+        :ui="{ body: 'p-3 sm:p-4 h-full' }"
+      >
+        <Icon v-if="!isLoading && !mappedImageUrl" name="lucide:image" class="text-primary/10" size="140" />
+
+        <img
+          v-else-if="mappedImageUrl"
+          :src="mappedImageUrl"
+          :alt="state.image?.name"
+          class="max-h-125 w-auto object-contain"
+        />
+
+        <Icon v-else name="lucide:loader" class="text-primary/30 animate-spin" size="48" />
+      </UCard>
+    </div>
   </UContainer>
 </template>
 

@@ -10,17 +10,12 @@ export const navItems = ref<NavigationMenuItem[]>([
   {
     label: "Code Generator",
     icon: "lucide:code-2",
-    to: "/dashboard/code-generator",
+    to: "/dashboard/code",
   },
   {
     label: "AI Article Writer",
     icon: "lucide:file-pen-line",
-    to: "/dashboard/article-writer",
-  },
-  {
-    label: "Blog Title Generator",
-    icon: "lucide:heading-1",
-    to: "/dashboard/blog-title",
+    to: "/dashboard/article",
   },
   {
     label: "Background Removal",
@@ -31,10 +26,5 @@ export const navItems = ref<NavigationMenuItem[]>([
     label: "Object Removal",
     icon: "lucide:eraser",
     to: "/dashboard/object-removal",
-  },
-  {
-    label: "Resume Reviewer",
-    icon: "lucide:file-search",
-    to: "/dashboard/resume-reviewer",
   },
 ])

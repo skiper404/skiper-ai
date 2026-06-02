@@ -8,7 +8,7 @@ definePageMeta({ layout: "default", middleware: "guest" })
 <template>
   <div>
     <UContainer id="hero">
-      <div class="flex flex-col items-center justify-center py-32 text-center sm:py-48 lg:pt-50 lg:pb-106">
+      <div class="flex flex-col items-center justify-center py-32 text-center sm:py-48 lg:pt-50 lg:pb-60">
         <h1 class="text-3xl font-bold tracking-tight sm:text-8xl">Create amazing AI tools</h1>
         <p class="text-dimmed mt-4 max-w-xl text-lg">
           Launch modern websites and apps with beautiful components, built-in dark mode, and Nuxt 4 integration

@@ -55,7 +55,7 @@ watch(
         orientation="vertical"
         :items="navItems"
         class="p-4"
-        color="secondary"
+        color="success"
         :ui="{ list: 'space-y-2' }"
       />
     </aside>
