@@ -1,7 +1,10 @@
-// import { incrementApiLimit } from '~~/server/services/user-api-limit'
-import { groq } from "~~/server/utils/groq"
+import { getUser } from "~~/server/utils/getUser"
+import { incrementLimit } from "~~/server/utils/incrementLimit"
+import { CONVERSATION_CONTENT } from "@/constants/constants"
 
 export default defineEventHandler(async (event) => {
+  const session = await requireUserSession(event)
+
   const { messages } = await readBody(event)
 
   if (!messages) {
@@ -11,8 +14,15 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const user = await getUser(session.user.id)
+  const isPro = await isUserPro(user.id)
+
+  if (!isPro) {
+    await incrementLimit(user)
+  }
+
   const response = await groq.chat.completions.create({
-    messages: [{ role: "system", content: "You are helpful assistant" }, ...messages],
+    messages: [{ role: "system", content: CONVERSATION_CONTENT }, ...messages],
     model: "groq/compound-mini",
     temperature: 1,
     max_completion_tokens: 1500,

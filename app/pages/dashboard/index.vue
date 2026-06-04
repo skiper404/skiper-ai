@@ -18,6 +18,7 @@ definePageMeta({ layout: "dashboard", middleware: "auth" })
         </UCard>
       </NuxtLink>
     </div>
+    <ProModal />
   </UContainer>
 </template>
 

@@ -12,6 +12,8 @@ model User {
   username  String
   email     String   @unique
   password  String?
+  plan      Plan @default(FREE)
+  generations Int @default(0)
 
   accounts Account[]
 
@@ -34,4 +36,9 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
+}
+
+enum Plan {
+  FREE
+  PRO
 }

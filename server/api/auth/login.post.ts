@@ -20,7 +20,11 @@ export default defineEventHandler(async (event) => {
   }
 
   await setUserSession(event, {
-    user: { id: existingUser.id, username: existingUser.username, email: existingUser.email },
+    user: {
+      id: existingUser.id,
+      username: existingUser.username,
+      email: existingUser.email,
+    },
   })
 
   return true

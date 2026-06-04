@@ -4,6 +4,8 @@ import type { FormSubmitEvent } from "@nuxt/ui"
 import { imageSchema, type ImageSchema } from "~~/shared/schemas/remove-object-image.schema"
 
 definePageMeta({ layout: "dashboard", middleware: "auth" })
+const { refreshUser, currentUser } = useCurrentUser()
+const { toggleOpen } = useModalPro()
 
 const isLoading = ref(false)
 const error = ref<AppError | null>()
@@ -21,6 +23,10 @@ const resetImage = () => {
 }
 
 const removeBg = async (event: FormSubmitEvent<ImageSchema>) => {
+  if ((currentUser.value?.generations ?? 0) >= 10) {
+    toggleOpen(true)
+  }
+
   try {
     isLoading.value = true
     const formData = new FormData()
@@ -37,6 +43,8 @@ const removeBg = async (event: FormSubmitEvent<ImageSchema>) => {
     if (data) {
       mappedImageUrl.value = data
     }
+
+    refreshUser()
   } catch (e) {
     const err = e as FetchError
     if (err.statusCode === 401) {
@@ -67,7 +75,7 @@ const removeBg = async (event: FormSubmitEvent<ImageSchema>) => {
             <UInput v-model="state.object" class="w-full" placeholder="Remove people from background" />
           </UFormField>
           <UFormField name="image" label="Image" description="JPG, GIF or PNG. 2MB Max.">
-            <UFileUpload v-model="state.image" accept="image/*" class="h-130" />
+            <UFileUpload v-model="state.image" accept="image/*" class="h-110" />
           </UFormField>
 
           <UButton type="submit" label="Submit" color="neutral" :disabled="isLoading" :loading="isLoading" />

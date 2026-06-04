@@ -5,6 +5,8 @@ import type { Message } from "@@/shared/types/message"
 import { type PromptSchema, promptSchema } from "@@/shared/schemas/prompt.schema"
 
 definePageMeta({ layout: "dashboard", middleware: "auth" })
+const { refreshUser, currentUser } = useCurrentUser()
+const { toggleOpen } = useModalPro()
 
 const isLoading = ref(false)
 const messages = ref<Message[]>([])
@@ -40,6 +42,8 @@ const submitPrompt = async (prompt: string) => {
         content: data,
       })
 
+      refreshUser()
+
       state.userPrompt = ""
     }
   } catch (e) {
@@ -50,11 +54,19 @@ const submitPrompt = async (prompt: string) => {
 }
 
 const sendMessage = async (event: FormSubmitEvent<PromptSchema>) => {
+  if ((currentUser.value?.generations ?? 0) >= 10) {
+    toggleOpen(true)
+  }
+
   await submitPrompt(event.data.userPrompt)
 }
 
 const submitOnEnter = async () => {
   if (!state.userPrompt.trim()) return
+
+  if ((currentUser.value?.generations ?? 0) >= 10) {
+    toggleOpen(true)
+  }
 
   await submitPrompt(state.userPrompt)
 }
@@ -72,6 +84,7 @@ const submitOnEnter = async () => {
       :description="error.statusMessage"
       class="my-2"
     />
+
     <div
       :class="[
         'bg-primary/2 scrollbar-thumb-success/50 relative mt-2 space-y-4 overflow-y-auto rounded-xl p-4',

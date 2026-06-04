@@ -1,10 +1,9 @@
 import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary"
 import { v2 as cloudinary } from "cloudinary"
 
-// import { incrementApiLimit } from "~~/server/services/user-api-limit"
-// import { validateUserStatus } from "~~/server/utils/validate-user-status"
-
 export default defineEventHandler(async (event) => {
+  const session = await requireUserSession(event)
+
   const formData = await readFormData(event)
   const file = formData.get("image") as File
   const object = formData.get("object")
@@ -13,7 +12,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: "No image provided" })
   }
 
-  // const isPro = validateUserStatus(event.context.user.id)
+  const user = await getUser(session.user.id)
+  const isPro = await isUserPro(user.id)
+
+  if (!isPro) {
+    await incrementLimit(user)
+  }
 
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer)
@@ -39,11 +43,6 @@ export default defineEventHandler(async (event) => {
     resource_type: "image",
     secure: true,
   })
-
-  // if (!isPro) {
-  //   await incrementApiLimit(event.context.user.id)
-  // }
-  console.log(finalImageUrl)
 
   return finalImageUrl
 })

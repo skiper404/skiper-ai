@@ -4,6 +4,8 @@ import { articleSchema, type ArticleSchema } from "@@/shared/schemas/article.sch
 import type { FetchError } from "ofetch"
 
 definePageMeta({ layout: "dashboard", middleware: "auth" })
+const { refreshUser, currentUser } = useCurrentUser()
+const { toggleOpen } = useModalPro()
 
 const isLoading = ref(false)
 const error = ref<AppError | null>(null)
@@ -16,7 +18,9 @@ const state = reactive<ArticleSchema>({
 const article = ref<string>("")
 
 const generateArticle = async () => {
-  console.log(state)
+  if ((currentUser.value?.generations ?? 0) >= 10) {
+    toggleOpen(true)
+  }
 
   error.value = null
 
@@ -33,6 +37,8 @@ const generateArticle = async () => {
     if (data) {
       article.value = data
     }
+    refreshUser()
+
     state.articleTitle = ""
     state.articleLength = 300
   } catch (e) {

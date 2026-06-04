@@ -3,12 +3,21 @@ import { v2 as cloudinary } from "cloudinary"
 import { connectCloudinary } from "~~/server/utils/cloudinary"
 
 export default defineEventHandler(async (event) => {
+  const session = await requireUserSession(event)
+
   const formData = await readFormData(event)
 
   const file = formData.get("image") as File
 
   if (!file) {
     throw createError({ statusCode: 400, statusMessage: "No image provided" })
+  }
+
+  const user = await getUser(session.user.id)
+  const isPro = await isUserPro(user.id)
+
+  if (!isPro) {
+    await incrementLimit(user)
   }
 
   const arrayBuffer = await file.arrayBuffer()

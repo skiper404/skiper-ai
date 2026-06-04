@@ -1,7 +1,10 @@
-// import { incrementApiLimit } from '~~/server/services/user-api-limit'
-import { groq } from "~~/server/utils/groq"
+import { CODE_CONTENT } from "~/constants/constants"
+import { incrementLimit } from "~~/server/utils/incrementLimit"
+import { isUserPro } from "~~/server/utils/isUserPro"
 
 export default defineEventHandler(async (event) => {
+  const session = await requireUserSession(event)
+
   const { messages } = await readBody(event)
 
   if (!messages) {
@@ -11,39 +14,18 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const user = await getUser(session.user.id)
+  const isPro = await isUserPro(user.id)
+
+  if (!isPro) {
+    await incrementLimit(user)
+  }
+
   const response = await groq.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: `
-You are a senior software engineering assistant.
-
-Your primary purpose is code generation and helping with software development.
-
-Behavior rules:
-
-1. If the user asks a programming or technical question:
-   - Provide clean, production-ready code.
-   - Prefer modern fullstack flow practices when relevant.
-   - Be concise but useful.
-
-2. If the user greets you (e.g. "hi", "hello", "привет"):
-   - Respond briefly in the same language as the user.
-   - Immediately transition to explaining that you are a coding assistant.
-   - Guide them to ask a programming-related question.
-
-Example behavior:
-User: "привет"
-Assistant: "Привет! Я помогаю с написанием кода и разработкой приложений. Чем помочь?"
-
-3. If the user asks non-programming questions:
-   - Politely refuse.
-   - Redirect to programming topics.
-
-4. Never engage in general conversation beyond a short greeting or transition sentence.
-
-Always prioritize code and software engineering assistance.
-`,
+        content: CODE_CONTENT,
       },
       ...messages,
     ],

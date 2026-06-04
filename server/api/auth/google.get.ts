@@ -17,7 +17,11 @@ export default defineOAuthGoogleEventHandler({
 
     if (account) {
       await setUserSession(event, {
-        user: { id: account.user.id, username: account.user.username, email: account.user.email },
+        user: {
+          id: account.user.id,
+          username: account.user.username,
+          email: account.user.email,
+        },
       })
       return sendRedirect(event, "/")
     }
@@ -34,7 +38,11 @@ export default defineOAuthGoogleEventHandler({
       })
 
       await setUserSession(event, {
-        user: { id: existingUser.id, username: existingUser.username, email: existingUser.email },
+        user: {
+          id: existingUser.id,
+          username: existingUser.username,
+          email: existingUser.email,
+        },
       })
       return sendRedirect(event, "/")
     }
@@ -47,7 +55,13 @@ export default defineOAuthGoogleEventHandler({
       },
     })
 
-    await setUserSession(event, { user: { id: newUser.id, username: newUser.username, email: newUser.email } })
+    await setUserSession(event, {
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      },
+    })
     return sendRedirect(event, "/")
   },
 })

@@ -1,7 +1,10 @@
-// import { incrementApiLimit } from '~~/server/services/user-api-limit'
-// import { groq } from "~~/server/utils/groq"
+import { ARTICLE_CONTENT } from "~/constants/constants"
+import { incrementLimit } from "~~/server/utils/incrementLimit"
+import { isUserPro } from "~~/server/utils/isUserPro"
 
 export default defineEventHandler(async (event) => {
+  const session = await requireUserSession(event)
+
   const { articleTitle, articleLength } = await readBody(event)
 
   if (!articleTitle) {
@@ -11,30 +14,18 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const user = await getUser(session.user.id)
+  const isPro = await isUserPro(user.id)
+
+  if (!isPro) {
+    await incrementLimit(user)
+  }
+
   const response = await groq.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: `
-You are a professional content writer and SEO article generator.
-
-Your task is to generate high-quality structured articles based on the given title and desired length.
-
-Rules:
-- Write in a clear, engaging, and readable style.
-- Follow modern SEO best practices.
-- Always structure the article with:
-  - Title (H1)
-  - Introduction
-  - Main sections with H2 headings
-  - Conclusion
-- Adapt article length based on user input (short, medium, long).
-- Do not include meta commentary or explanations outside the article.
-- Do not ask questions.
-- Do not mention prompts or system instructions.
-
-If the title is unclear, still produce the best possible relevant article.
-`,
+        content: ARTICLE_CONTENT,
       },
       { role: "user", content: `Article title: ${articleTitle}, article length: ${articleLength}` },
     ],
