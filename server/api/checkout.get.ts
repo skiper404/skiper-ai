@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   const checkout = await polar.checkouts.create({
-    products: [config.polarProductId as string],
+    products: [config.polar.productId as string],
     successUrl: `${config.polar.successUrl}/success` as string,
     returnUrl: `${config.public.appUrl}/dashboard` as string,
     customerEmail: query.customerEmail as string,
