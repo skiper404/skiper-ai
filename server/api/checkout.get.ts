@@ -5,8 +5,8 @@ export default defineEventHandler(async (event) => {
 
   const checkout = await polar.checkouts.create({
     products: [config.polarProductId as string],
-    successUrl: `${config.polarSuccessUrl}/success` as string,
-    returnUrl: `${config.polarSuccessUrl}/dashboard` as string,
+    successUrl: `${config.polar.successUrl}/success` as string,
+    returnUrl: `${config.public.appUrl}/dashboard` as string,
     customerEmail: query.customerEmail as string,
     metadata: { userId: session.user.id as string },
   })
