@@ -2,7 +2,9 @@
 import { aiTools } from "~/data/ai-tools"
 import { reviews } from "~/data/reviews"
 
+const config = useRuntimeConfig()
 definePageMeta({ layout: "default", middleware: "guest" })
+useHead({ title: config.public.appName })
 </script>
 
 <template>

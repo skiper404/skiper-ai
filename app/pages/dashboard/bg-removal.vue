@@ -3,8 +3,11 @@ import type { FetchError } from "ofetch"
 import type { FormSubmitEvent } from "@nuxt/ui"
 import { imageSchema, type ImageSchema } from "~~/shared/schemas/remove-bg-image.schema"
 
+const config = useRuntimeConfig()
 definePageMeta({ layout: "dashboard", middleware: "auth" })
-const { refreshUser, currentUser } = useCurrentUser()
+useHead({ title: `${config.public.appName} | Background Removal` })
+
+const { refreshUser, user } = useCurrentUser()
 const { toggleOpen } = useModalPro()
 
 const isLoading = ref(false)
@@ -21,7 +24,7 @@ const resetImage = () => {
 }
 
 const removeBg = async (event: FormSubmitEvent<ImageSchema>) => {
-  if ((currentUser.value?.generations ?? 0) >= 10) {
+  if ((user.value?.generations ?? 0) >= 10 || user.value?.plan === "FREE") {
     toggleOpen(true)
   }
 

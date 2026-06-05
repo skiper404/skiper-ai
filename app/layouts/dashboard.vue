@@ -4,8 +4,8 @@ import { FREE_GENERATIONS } from "~/constants/constants"
 import { navItems } from "~/data/nav-items"
 
 const { dropdownItems } = useDropdownItems()
-const { currentUser } = useCurrentUser()
-const { toggleOpen, isOpen: isModalPro } = useModalPro()
+const { user } = useCurrentUser()
+const { toggleOpen } = useModalPro()
 
 const isOpen = useStorage("isSidebarOpen", true)
 
@@ -16,7 +16,7 @@ const toggleSidebar = () => {
 const isMobile = useMediaQuery("(max-width: 768px)")
 
 const progress = computed(() => {
-  const generations = currentUser.value?.generations ?? 0
+  const generations = user.value?.generations ?? 0
   return (generations / FREE_GENERATIONS) * 100
 })
 
@@ -33,10 +33,9 @@ watch(
   <div class="min-h-screen">
     <header class="bg-primary/10 flex h-12 items-center justify-between px-4">
       <AppLogo />
-      <pre>{{ isModalPro }}</pre>
       <div class="flex items-center gap-2">
         <UButton
-          :icon="isOpen ? 'lucide:panel-left-open' : 'lucide:panel-left-close'"
+          :icon="isOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'"
           color="neutral"
           variant="ghost"
           class="ml-auto md:hidden"
@@ -66,8 +65,11 @@ watch(
         :ui="{ list: 'space-y-2' }"
       />
 
-      <div v-if="currentUser" class="mt-auto hidden w-full -translate-y-14 flex-col space-y-4 p-4 md:flex">
-        <div>{{ currentUser.generations }}/{{ FREE_GENERATIONS }} Free Generations</div>
+      <div
+        v-if="user && user.plan === 'FREE'"
+        class="mt-auto hidden w-full -translate-y-14 flex-col space-y-4 p-4 md:flex"
+      >
+        <div>{{ user.generations }}/{{ FREE_GENERATIONS }} used daily limit</div>
         <UProgress :model-value="progress" color="success" />
         <UButton class="flex w-full justify-center" color="secondary" @click="toggleOpen(true)">
           <Icon name="lucide:zap" />
@@ -90,8 +92,8 @@ watch(
         :ui="{ list: 'space-y-2' }"
         @click="isOpen = false"
       />
-      <div v-if="currentUser" class="fixed bottom-20 left-4 flex w-50 flex-col space-y-4">
-        <div>{{ currentUser.generations }}/{{ FREE_GENERATIONS }} Free Generations</div>
+      <div v-if="user && user.plan === 'FREE'" class="fixed bottom-20 left-4 flex w-50 flex-col space-y-4">
+        <div>{{ user.generations }}/{{ FREE_GENERATIONS }} used daily limit</div>
         <UProgress :model-value="progress" color="success" />
         <UButton class="flex w-full justify-center" color="secondary" @click="toggleOpen(true)">
           <Icon name="lucide:zap" />

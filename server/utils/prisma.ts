@@ -1,8 +1,10 @@
 import { PrismaPg } from "@prisma/adapter-pg"
 import { PrismaClient } from "@@/prisma/generated/client"
 
+const config = useRuntimeConfig()
+
 const prismaClientSingleton = () => {
-  const pool = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
+  const pool = new PrismaPg({ connectionString: config.databaseUrl })
   return new PrismaClient({ adapter: pool })
 }
 

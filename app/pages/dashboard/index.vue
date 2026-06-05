@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { aiTools } from "~/data/ai-tools"
 
+const config = useRuntimeConfig()
 definePageMeta({ layout: "dashboard", middleware: "auth" })
+useHead({ title: `${config.public.appName} | Dashboard` })
 </script>
 
 <template>

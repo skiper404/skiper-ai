@@ -3,7 +3,9 @@ import type { FormSubmitEvent } from "@nuxt/ui"
 import { type RegisterUserSchema, registerUserSchema } from "@@/shared/schemas/register-user.schema"
 import type { FetchError } from "ofetch"
 
+const config = useRuntimeConfig()
 definePageMeta({ layout: "auth", middleware: "guest" })
+useHead({ title: `${config.public.appName} | Register` })
 
 const state = reactive<RegisterUserSchema>({
   username: "",

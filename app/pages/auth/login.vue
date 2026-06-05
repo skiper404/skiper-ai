@@ -3,7 +3,9 @@ import type { FormSubmitEvent } from "@nuxt/ui"
 import { type LoginUserSchema, loginUserSchema } from "@@/shared/schemas/login-user.schema"
 import type { FetchError } from "ofetch"
 
+const config = useRuntimeConfig()
 definePageMeta({ layout: "auth", middleware: "guest" })
+useHead({ title: `${config.public.appName} | Login` })
 
 const state = reactive<LoginUserSchema>({ email: "", password: "" })
 const error = ref<AppError | null>(null)

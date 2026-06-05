@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { aiTools } from "~/data/ai-tools"
 const { isOpen } = useModalPro()
+const { user } = useCurrentUser()
 
 const upgradeUserToPro = async () => {
-  const { url } = await $fetch("/api/polar/checkout", {
-    method: "POST",
-  })
-  window.location.href = url
+  const { url } = await $fetch(`/api/checkout?customerEmail=${user.value?.email}`)
+  await navigateTo(url, { external: true })
 }
 </script>
 

@@ -4,8 +4,11 @@ import type { FormSubmitEvent } from "@nuxt/ui"
 import type { Message } from "@@/shared/types/message"
 import { type PromptSchema, promptSchema } from "@@/shared/schemas/prompt.schema"
 
+const config = useRuntimeConfig()
 definePageMeta({ layout: "dashboard", middleware: "auth" })
-const { refreshUser, currentUser } = useCurrentUser()
+useHead({ title: `${config.public.appName} | Code Generator` })
+
+const { refreshUser, user } = useCurrentUser()
 const { toggleOpen } = useModalPro()
 
 const isLoading = ref(false)
@@ -54,7 +57,7 @@ const submitPrompt = async (prompt: string) => {
 }
 
 const sendMessage = async (event: FormSubmitEvent<PromptSchema>) => {
-  if ((currentUser.value?.generations ?? 0) >= 10) {
+  if ((user.value?.generations ?? 0) >= 10 || user.value?.plan === "FREE") {
     toggleOpen(true)
   }
 
@@ -64,7 +67,7 @@ const sendMessage = async (event: FormSubmitEvent<PromptSchema>) => {
 const submitOnEnter = async () => {
   if (!state.userPrompt.trim()) return
 
-  if ((currentUser.value?.generations ?? 0) > 10) {
+  if ((user.value?.generations ?? 0) > 10) {
     toggleOpen(true)
   }
 

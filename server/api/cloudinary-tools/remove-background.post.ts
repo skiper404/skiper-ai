@@ -1,6 +1,7 @@
 import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary"
 import { v2 as cloudinary } from "cloudinary"
 import { connectCloudinary } from "~~/server/utils/cloudinary"
+import { requireGenerationLimit } from "~~/server/utils/requireGenerationLimit"
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event)
@@ -13,12 +14,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: "No image provided" })
   }
 
-  const user = await getUser(session.user.id)
-  const isPro = await isUserPro(user.id)
-
-  if (!isPro) {
-    await incrementLimit(user)
-  }
+  await requireGenerationLimit(session.user.id)
 
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer)

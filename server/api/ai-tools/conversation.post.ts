@@ -1,6 +1,5 @@
-import { getUser } from "~~/server/utils/getUser"
-import { incrementLimit } from "~~/server/utils/incrementLimit"
 import { CONVERSATION_CONTENT } from "@/constants/constants"
+import { requireGenerationLimit } from "~~/server/utils/requireGenerationLimit"
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event)
@@ -14,12 +13,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const user = await getUser(session.user.id)
-  const isPro = await isUserPro(user.id)
-
-  if (!isPro) {
-    await incrementLimit(user)
-  }
+  await requireGenerationLimit(session.user.id)
 
   const response = await groq.chat.completions.create({
     messages: [{ role: "system", content: CONVERSATION_CONTENT }, ...messages],
