@@ -1,75 +1,116 @@
-# Nuxt Minimal Starter
+# Skiper AI
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A modern AI-powered SaaS platform built with Nuxt 4, Prisma, PostgreSQL, Groq AI, Cloudinary, and Polar.
 
-## Setup
+The application provides a collection of AI tools for content creation, code generation, conversational assistance, and image processing through a clean subscription-based experience.
 
-Make sure to install dependencies:
+## Goal of the Project
+
+Skiper AI is designed as a portfolio-grade SaaS application that demonstrates modern fullstack development practices, secure authentication, AI integrations, subscription management, and scalable architecture using the Nuxt ecosystem.
+
+## Features
+
+- AI Chat Assistant
+- AI Code Generator
+- AI Article Writer
+- AI Background Removal
+- AI Object Removal
+- Authentication & Authorization
+- Google OAuth Login
+- Free & Pro Subscription Plans
+- Polar Payment Integration
+- Usage Limits & Generation Tracking
+- Modern UI powered by Nuxt UI
+
+# Tech Stack
+
+# Frontend
+
+-Nuxt 4
+-TypeScript
+-Tailwind CSS v4
+-Nuxt UI
+-VueUse
+
+# Backend
+
+Nuxt Server (Nitro)
+
+# Database
+
+PostgreSQL
+Prisma ORM
+
+# Authentication
+
+Nuxt Auth Utils
+Google OAuth
+Session-based Authentication
+Argon2 Password Hashing
+
+# AI & Media
+
+Groq API
+Cloudinary
+
+# Payments
+
+Polar
+
+# Validation
+
+Zod
+
+# Architecture
+
+- app/ — frontend application (pages, layouts, components)
+- server/ — backend APIs, integrations, business logic
+- prisma/ — database schema and migrations
+- shared/ — shared types and validation schemas
+- public/ — static assets
+
+# Required Environment Variables
+
+- Database
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+DATABASE_URL
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+- Authentication
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+NUXT_SESSION_PASSWORD
 ```
-
-## Production
-
-Build the application for production:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+NUXT_OAUTH_GOOGLE_CLIENT_ID
+NUXT_OAUTH_GOOGLE_CLIENT_SECRET
 ```
 
-Locally preview production build:
+- AI
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+GROQ_API_KEY
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Cloudinary
+
+```bash
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+```
+
+- Polar
+
+```bash
+POLAR_ACCESS_TOKEN
+POLAR_WEBHOOK_SECRET
+```
+
+- Application
+
+```bash
+NUXT_PUBLIC_APP_URL
+```
