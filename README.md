@@ -34,32 +34,32 @@ Skiper AI is designed as a portfolio-grade SaaS application that demonstrates mo
 
 # Backend
 
-Nuxt Server (Nitro)
+- Nuxt Server (Nitro)
 
 # Database
 
-PostgreSQL
-Prisma ORM
+- PostgreSQL
+- Prisma ORM
 
 # Authentication
 
-Nuxt Auth Utils
-Google OAuth
-Session-based Authentication
-Argon2 Password Hashing
+- Nuxt Auth Utils
+- Google OAuth
+- Session-based Authentication
+- Argon2 Password Hashing
 
 # AI & Media
 
-Groq API
-Cloudinary
+- Groq API
+- Cloudinary
 
 # Payments
 
-Polar
+- Polar
 
 # Validation
 
-Zod
+- Zod
 
 # Architecture
 
