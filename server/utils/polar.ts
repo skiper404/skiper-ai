@@ -3,8 +3,8 @@ import { Polar } from "@polar-sh/sdk"
 const config = useRuntimeConfig()
 
 export const polar = new Polar({
-  accessToken: config.polarAccessToken,
-  server: config.polarServer as "sandbox" | "production",
+  accessToken: config.polar.accessToken,
+  server: config.polar.server as "sandbox" | "production",
 })
 
 export const getPolarCustomer = async (externalId: string) => {
@@ -36,7 +36,7 @@ export const getUserSubscription = async (userId: string) => {
 
     return state.activeSubscriptions?.[0] ?? null
   } catch (error) {
-    console.error("Polar getCustomerState error:", error)
+    console.error("Polar getCustomerState error11111:", error)
     return null
   }
 }

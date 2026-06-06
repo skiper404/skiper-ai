@@ -21,7 +21,7 @@ const state = reactive<ArticleSchema>({
 const article = ref<string>("")
 
 const generateArticle = async () => {
-  if ((user.value?.generations ?? 0) >= 10 || user.value?.plan === "FREE") {
+  if ((user.value?.generations ?? 0) >= 10 && user.value?.plan === "FREE") {
     toggleOpen(true)
   }
 

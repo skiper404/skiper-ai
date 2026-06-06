@@ -57,7 +57,7 @@ const submitPrompt = async (prompt: string) => {
 }
 
 const sendMessage = async (event: FormSubmitEvent<PromptSchema>) => {
-  if ((user.value?.generations ?? 0) >= 10 || user.value?.plan === "FREE") {
+  if ((user.value?.generations ?? 0) >= 10 && user.value?.plan === "FREE") {
     toggleOpen(true)
   }
 

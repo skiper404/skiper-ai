@@ -2,7 +2,7 @@ export default defineEventHandler((event) => {
   const config = useRuntimeConfig()
 
   const webhookHandler = Webhooks({
-    webhookSecret: config.polarWebhookSecret!,
+    webhookSecret: config.polar.webhookSecret,
 
     onSubscriptionActive: async (payload) => {
       const userId = payload.data.metadata.userId as string
