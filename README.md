@@ -26,11 +26,11 @@ Skiper AI is designed as a portfolio-grade SaaS application that demonstrates mo
 
 # Frontend
 
--Nuxt 4
--TypeScript
--Tailwind CSS v4
--Nuxt UI
--VueUse
+- Nuxt 4
+- TypeScript
+- Tailwind CSS v4
+- Nuxt UI
+- VueUse
 
 # Backend
 
